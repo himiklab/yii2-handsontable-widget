@@ -1,0 +1,26 @@
+{
+    "name": "himiklab/yii2-handsontable-widget",
+    "description": "A minimalist Excel-like grid widget for Yii2",
+    "keywords": ["yii2", "handsontable", "grid", "widget"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "support": {
+        "source": "https://github.com/himiklab/yii2-handsontable-widget",
+        "issues": "https://github.com/himiklab/yii2-handsontable-widget/issues"
+    },
+    "authors": [
+        {
+            "name": "HimikLab",
+            "homepage": "https://github.com/himiklab/"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "bower-asset/handsontable": "*@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "himiklab\\handsontable\\": ""
+        }
+    }
+}
