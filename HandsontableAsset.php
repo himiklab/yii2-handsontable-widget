@@ -13,14 +13,12 @@ class HandsontableAsset extends AssetBundle
 {
     public $sourcePath = '@bower/handsontable/dist';
 
-    public $depends = [
-        'yii\web\JqueryAsset',
-    ];
+    public $depends = [];
 
     public function init()
     {
         parent::init();
-        $this->js[] = YII_DEBUG ? 'jquery.handsontable.full.js' : 'jquery.handsontable.full.min.js';
-        $this->css[] = YII_DEBUG ? 'jquery.handsontable.full.css' : 'jquery.handsontable.full.min.css';
+        $this->js[] = YII_DEBUG ? 'handsontable.full.js' : 'handsontable.full.min.js';
+        $this->css[] = YII_DEBUG ? 'handsontable.full.css' : 'handsontable.full.min.css';
     }
 }
