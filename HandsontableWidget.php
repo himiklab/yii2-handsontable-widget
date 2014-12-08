@@ -35,7 +35,7 @@ class HandsontableWidget extends Widget
 {
     /**
      * @var string $settings
-     * @see https://github.com/handsontable/jquery-handsontable/wiki
+     * @see https://github.com/handsontable/handsontable
      */
     public $settings = '';
 
@@ -48,7 +48,7 @@ class HandsontableWidget extends Widget
             (YII_DEBUG ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
         );
 
-        $script = "$('#handsontable-{$this->id}').handsontable({$settings});";
+        $script = "new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})";
         $view->registerJs($script, $view::POS_READY);
         HandsontableAsset::register($view);
     }

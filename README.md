@@ -1,6 +1,6 @@
 Handsontable Widget for Yii2
-========================
-A minimalist Excel-like grid widget for Yii2 based on [Handsontable](https://github.com/handsontable/jquery-handsontable).
+============================
+A minimalist Excel-like grid widget for Yii2 based on [Handsontable](https://github.com/handsontable/handsontable).
 
 Installation
 ------------

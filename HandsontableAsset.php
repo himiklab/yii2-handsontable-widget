@@ -13,8 +13,6 @@ class HandsontableAsset extends AssetBundle
 {
     public $sourcePath = '@bower/handsontable/dist';
 
-    public $depends = [];
-
     public function init()
     {
         parent::init();
