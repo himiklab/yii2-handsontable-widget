@@ -16,7 +16,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "bower-asset/handsontable": "~0.12.1"
+        "bower-asset/handsontable": "~0.18.0"
     },
     "autoload": {
         "psr-4": {

@@ -11,12 +11,17 @@ use yii\web\AssetBundle;
 
 class HandsontableAsset extends AssetBundle
 {
-    public $sourcePath = '@bower/handsontable/dist';
+    public $sourcePath = '@bower';
 
     public function init()
     {
         parent::init();
-        $this->js[] = YII_DEBUG ? 'handsontable.full.js' : 'handsontable.full.min.js';
-        $this->css[] = YII_DEBUG ? 'handsontable.full.css' : 'handsontable.full.min.css';
+        $this->js[] = YII_DEBUG ?
+            'handsontable/dist/handsontable.full.js' : 'handsontable/dist/handsontable.full.min.js';
+        $this->css[] = YII_DEBUG ?
+            'handsontable/dist/handsontable.full.css' : 'handsontable/dist/handsontable.full.min.css';
+        $this->js[] = YII_DEBUG ? 'moment/moment.js' : 'moment/min/moment.min.js';
+        $this->js[] = 'pikaday/pikaday.js';
+        $this->css[] = 'pikaday/css/pikaday.css';
     }
 }
