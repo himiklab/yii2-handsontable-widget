@@ -48,7 +48,7 @@ class HandsontableWidget extends Widget
             (YII_DEBUG ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
         );
 
-        $script = "new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})";
+        $script = "var hst_{$this->id} = new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})";
         $view->registerJs($script, $view::POS_READY);
         HandsontableAsset::register($view);
     }
