@@ -2,6 +2,8 @@ Handsontable Widget for Yii2
 ============================
 A minimalist Excel-like grid widget for Yii2 based on [Handsontable](https://github.com/handsontable/handsontable).
 
+[![Packagist](https://img.shields.io/packagist/dt/himiklab/yii2-handsontable-widget.svg)]() [![Packagist](https://img.shields.io/packagist/v/himiklab/yii2-handsontable-widget.svg)]()  [![license](https://img.shields.io/badge/License-MIT-yellow.svg)]()
+
 Installation
 ------------
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
