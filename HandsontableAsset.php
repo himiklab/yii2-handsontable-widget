@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/himiklab/yii2-handsontable-widget
- * @copyright Copyright (c) 2014 HimikLab
+ * @copyright Copyright (c) 2014-2018 HimikLab
  * @license http://opensource.org/licenses/MIT MIT
  */
 
@@ -11,17 +11,20 @@ use yii\web\AssetBundle;
 
 class HandsontableAsset extends AssetBundle
 {
-    public $sourcePath = '@bower';
+    public $sourcePath = '@bower/handsontable/dist';
 
     public function init()
     {
         parent::init();
         $this->js[] = YII_DEBUG ?
-            'handsontable/dist/handsontable.full.js' : 'handsontable/dist/handsontable.full.min.js';
+            'handsontable.full.js' : 'handsontable.full.min.js';
         $this->css[] = YII_DEBUG ?
-            'handsontable/dist/handsontable.full.css' : 'handsontable/dist/handsontable.full.min.css';
-        $this->js[] = YII_DEBUG ? 'moment/moment.js' : 'moment/min/moment.min.js';
-        $this->js[] = 'pikaday/pikaday.js';
-        $this->css[] = 'pikaday/css/pikaday.css';
+            'handsontable.full.css' : 'handsontable.full.min.css';
     }
+
+    public $depends = [
+        'himiklab\handsontable\MomentAsset',
+        'himiklab\handsontable\NumbroAsset',
+        'himiklab\handsontable\PikadeyAsset',
+    ];
 }

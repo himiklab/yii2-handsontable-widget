@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/himiklab/yii2-handsontable-widget
- * @copyright Copyright (c) 2014 HimikLab
+ * @copyright Copyright (c) 2014-2018 HimikLab
  * @license http://opensource.org/licenses/MIT MIT
  */
 
