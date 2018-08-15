@@ -39,3 +39,32 @@ use himiklab\handsontable\HandsontableWidget;
     ]
 ]) ?>
 ```
+
+or with ActiveRecord
+
+in view:
+```php
+use himiklab\handsontable\HandsontableWidget;
+
+<?= HandsontableWidget::widget([
+    'requestUrl' => 'hts',
+    'isRemoteChange' => true,
+]); ?>
+```
+
+in controller:
+```php
+use app\models\Page;
+use himiklab\handsontable\actions\HandsontableActiveAction;
+
+public function actions()
+{
+    return [
+        'hts' => [
+            'class' => HandsontableActiveAction::className(),
+            'model' => Page::className(),
+            'isChangeable' => true,
+        ],
+    ];
+}
+```

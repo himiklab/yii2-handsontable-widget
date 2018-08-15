@@ -9,6 +9,7 @@ namespace himiklab\handsontable;
 
 use yii\base\Widget;
 use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * Handsontable grid widget for Yii2.
@@ -34,33 +35,100 @@ use yii\helpers\Json;
 class HandsontableWidget extends Widget
 {
     /**
-     * @var string $settings
+     * @var array $settings
      * @see https://github.com/handsontable/handsontable
      */
-    public $settings = '';
+    public $settings = [];
 
     /** @var string */
     public $varPrefix = 'hst_';
 
-    public function init()
+    /** @var string|null */
+    public $requestUrl;
+
+    /** @var bool */
+    public $isRemoteChange = false;
+
+    /** @var string */
+    protected $jsVarName;
+
+    public function run()
     {
-        parent::init();
         $view = $this->getView();
+
         $settings = Json::encode(
             $this->settings,
             (YII_DEBUG ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
         );
 
         HandsontableAsset::register($view);
-        $varName = $this->varPrefix . $this->id;
+        $this->jsVarName = $this->varPrefix . $this->id;
         $view->registerJs(
-            "var {$varName} = new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})",
+            "var {$this->jsVarName} = new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})",
             $view::POS_READY
         );
+
+        if ($this->requestUrl) {
+            $this->prepareRemoteSettings();
+        }
+
+        echo "<div id='handsontable-{$this->id}'></div>" . PHP_EOL;
     }
 
-    public function run()
+    protected function prepareRemoteSettings()
     {
-        echo "<div id='handsontable-{$this->id}'></div>" . PHP_EOL;
+        $view = $this->getView();
+        $requestUrl = Url::to([$this->requestUrl, 'action' => 'request']);
+        $changeUrl = Url::to([$this->requestUrl, 'action' => 'change']);
+
+        $view->registerJs(
+            <<<JS
+"use strict";
+var pkData = [];
+var attributesData = [];
+jQuery.ajax({
+    url: "{$requestUrl}",
+    method: "POST",
+    dataType: "JSON",
+    success: function(result) {
+        pkData = result.pk;
+        attributesData = result.attributes;
+        {$this->jsVarName}.loadData(result.data);
+    }
+});
+JS
+        );
+
+        if ($this->isRemoteChange) {
+            $view->registerJs(
+                <<<JS
+"use strict";
+{$this->jsVarName}.updateSettings({
+    afterChange: function (change, source) {
+        if (source === "loadData") {
+            return;
+        }
+
+        var result = {};
+        change.forEach(function(item) {
+            var pkKey = pkData[item[0]];
+            var attributeKey = attributesData[item[1]];
+            if (result[pkKey] === undefined) {
+                result[pkKey] = {};
+            }
+
+            result[pkKey][attributeKey] = item[3];
+        });
+
+        jQuery.ajax({
+            url: "{$changeUrl}",
+            method: "POST",
+            data: {data: JSON.stringify(result)}
+        });
+    }
+});
+JS
+            );
+        }
     }
 }
