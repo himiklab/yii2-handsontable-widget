@@ -39,6 +39,9 @@ class HandsontableWidget extends Widget
      */
     public $settings = '';
 
+    /** @var string */
+    public $varPrefix = 'hst_';
+
     public function init()
     {
         parent::init();
@@ -49,8 +52,9 @@ class HandsontableWidget extends Widget
         );
 
         HandsontableAsset::register($view);
+        $varName = $this->varPrefix . $this->id;
         $view->registerJs(
-            "var hst_{$this->id} = new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})",
+            "var {$varName} = new Handsontable(document.getElementById('handsontable-{$this->id}'), {$settings})",
             $view::POS_READY
         );
     }
