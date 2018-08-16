@@ -9,7 +9,6 @@ namespace himiklab\handsontable\actions;
 
 use Yii;
 use yii\base\Action;
-use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
@@ -83,7 +82,8 @@ class HandsontableActiveAction extends Action
                 return $this->requestAction();
             case 'change':
                 if ($this->isChangeable) {
-                    $this->changeAction(Json::decode(Yii::$app->request->post('data')));
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return $this->changeAction(Json::decode(Yii::$app->request->post('data')));
                 }
                 break;
             default:
@@ -106,12 +106,12 @@ class HandsontableActiveAction extends Action
         $response = [];
         $column = 0;
         foreach ($this->columns as $modelAttribute) {
-            $response['data'][0][] = $model->getAttributeLabel($modelAttribute);
+            $response['headers'][$column] = $model->getAttributeLabel($modelAttribute);
             $response['attributes'][$column] = $modelAttribute;
             ++$column;
         }
 
-        $row = 1;
+        $row = 0;
         foreach ($dataProvider->getModels() as $record) {
             if (\is_array($record->primaryKey)) {
                 $response['pk'][$row] = \implode(self::COMPOSITE_KEY_DELIMITER, $record->primaryKey);
@@ -135,6 +135,7 @@ class HandsontableActiveAction extends Action
      * @param array $requestData
      * @throws \Exception
      * @throws \yii\db\Exception
+     * @return array
      */
     protected function changeAction($requestData)
     {
@@ -161,15 +162,30 @@ class HandsontableActiveAction extends Action
                 }
 
                 if (!$record->save()) {
-                    throw new Exception(print_r($record->getErrors(), true));
+                    $transaction->rollBack();
+                    return ['errors' => $this->renderModelErrors($record)];
                 }
             }
-
         } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
         }
-
         $transaction->commit();
+
+        return [];
+    }
+
+    /**
+     * @param \yii\db\ActiveRecord $model
+     * @return string
+     */
+    protected function renderModelErrors($model)
+    {
+        $errors = '';
+        foreach ($model->errors as $error) {
+            $errors .= (\implode(' ', $error) . ' ');
+        }
+
+        return $errors;
     }
 }

@@ -21,6 +21,7 @@ class HandsontableAsset extends AssetBundle
         $this->js[] = 'numbro/numbro.js';
         $this->js[] = 'pikaday/pikaday.js';
         $this->js[] = YII_DEBUG ? 'handsontable.full.js' : 'handsontable.full.min.js';
+        $this->js[] = YII_DEBUG ? 'languages/all.js' : 'languages/all.min.js';
 
         $this->css[] = 'pikaday/pikaday.css';
         $this->css[] = YII_DEBUG ? 'handsontable.full.css' : 'handsontable.full.min.css';

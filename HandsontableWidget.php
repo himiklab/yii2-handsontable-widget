@@ -7,6 +7,7 @@
 
 namespace himiklab\handsontable;
 
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -56,6 +57,11 @@ class HandsontableWidget extends Widget
     {
         $view = $this->getView();
 
+        if (\in_array(Yii::$app->language, ['de-DE', 'de-CH', 'es-MX', 'fr-FR', 'ja-JP', 'nb-NO', 'pl-PL',
+            'pt-BR', 'ru-RU', 'zh-CN', 'zh-TW'])
+        ) {
+            $this->settings = \array_merge(['language' => Yii::$app->language], $this->settings);
+        }
         $settings = Json::encode(
             $this->settings,
             (YII_DEBUG ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK
@@ -93,6 +99,11 @@ jQuery.ajax({
     success: function(result) {
         pkData = result.pk;
         attributesData = result.attributes;
+
+        {$this->jsVarName}.updateSettings({
+            rowHeaders: true,
+            colHeaders: result.headers
+        });
         {$this->jsVarName}.loadData(result.data);
     }
 });
@@ -123,7 +134,12 @@ JS
         jQuery.ajax({
             url: "{$changeUrl}",
             method: "POST",
-            data: {data: JSON.stringify(result)}
+            data: {data: JSON.stringify(result)},
+            success: function(result) {
+                if (result.errors !== undefined) {
+                    alert(result.errors);
+                }
+            }
         });
     }
 });
