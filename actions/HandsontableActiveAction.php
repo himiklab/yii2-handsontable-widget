@@ -142,7 +142,7 @@ class HandsontableActiveAction extends Action
         $model = $this->model;
         $modelPK = $model::primaryKey();
 
-        $transaction = Yii::$app->db->beginTransaction();
+        $transaction = $model::getDb()->beginTransaction();
         try {
             foreach ($requestData as $pk => $modelData) {
                 if (\count($modelPK) > 1) {
