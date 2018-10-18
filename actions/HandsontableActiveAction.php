@@ -103,7 +103,12 @@ class HandsontableActiveAction extends Action
         }
 
         $dataProvider = new ActiveDataProvider(['query' => $query]);
-        $response = [];
+        $response = [
+            'headers' => [],
+            'attributes' => [],
+            'pk' => [],
+            'data' => [],
+        ];
         $column = 0;
         foreach ($this->columns as $modelAttribute) {
             $response['headers'][$column] = $model->getAttributeLabel($modelAttribute);
